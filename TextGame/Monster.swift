@@ -14,8 +14,8 @@ class Monster : LifeForm
     {
         super.init()
     }
-    override init(_name: String, _health: Int, _attack: Int, _magic: Int)
+    override init(inout _name: String!)
     {
-        super.init(_name: name, _health: health, _attack: attack, _magic: magic)
+        super.init(_name: &_name)
     }
 }

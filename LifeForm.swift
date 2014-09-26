@@ -19,17 +19,17 @@ class LifeForm
         self.name = "Creature"
         self.health = 25
         self.attack = 5
-        self.magic = 3
+        self.magic = 5
     }
-    init(_name: String, _health: Int, _attack: Int, _magic: Int)
+    init(inout _name: String!)
     {
         self.name = _name
-        self.health = _health
-        self.attack = _attack
-        self.magic = _magic
+        self.health = 25
+        self.attack = 5
+        self.magic = 5
     }
     
-    var getName: String
+    var lifeFormName: String
         {
         get{
             return name

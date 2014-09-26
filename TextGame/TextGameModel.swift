@@ -11,34 +11,34 @@ import Foundation
 var state : String = ""
 var direction: String = ""
 var response: String = ""
-var running = false
-var isBattle = false
+var running: Bool!
+var isBattle: Bool!
 var monster: Monster! = nil
-var player: Human! = Human(_name: "Siv",_health: 50,_attack: 10, _magic: 5)
+var player: Human! = nil
+let welcome: String! = "Hello \(player.lifeFormName), would you like to go North, South, East, or West?"
 
-
-func checkState() -> Bool {
+func checkState(inout checkResponse: String!) -> String {
     while running == true
     {
-        switch state {
+        checkRand()
+        switch state
+        {
             case "battle":
-                //battleLoop()
-                break
+                return battleLoop(&checkResponse)
             case "move":
-                break
+                return moveDirection(&checkResponse)
             default:
                 running = false
                 break
         }
     }
-    return running
+    return "exit"
 }
 
 func checkRand() -> Bool{
     var random : Int = (Int)(arc4random_uniform(10))
     var compareNum = [3, 5, 9]
     var checkNum: Int
-    var isBattle: Bool = true
     for var i = 0; i < compareNum.count; i++
     {
         
@@ -61,7 +61,7 @@ func moveDirection(inout checkDir: String!) -> String {
     switch checkDir{
         case "north":
             dir = "You moved \(checkDir)."
-            if isBattle
+            if isBattle == true
             {
                 return dir + "A battle has started!"
             }
@@ -70,7 +70,7 @@ func moveDirection(inout checkDir: String!) -> String {
             }
         case "south":
             dir = "You moved \(checkDir)."
-            if isBattle
+            if isBattle == true
             {
                 return dir + "A battle has started!"
             }
@@ -79,7 +79,7 @@ func moveDirection(inout checkDir: String!) -> String {
             }
         case "east":
             dir = "You moved \(checkDir)."
-            if isBattle
+            if isBattle == true
             {
                 return dir + "A battle has started!"
             }
@@ -88,7 +88,7 @@ func moveDirection(inout checkDir: String!) -> String {
             }
         case "west":
             dir = "You moved \(checkDir)."
-            if isBattle
+            if isBattle == true
             {
                 return dir + "A battle has started!"
             }
@@ -104,20 +104,18 @@ func moveDirection(inout checkDir: String!) -> String {
 func battleLoop(inout response: String!) -> String
 {
     var wrapper: String
-    if isBattle
+    if isBattle == true
     {
-       wrapper = "You encountered a " + monster.getName + "!"
+       wrapper = "You encountered a " + monster.lifeFormName + "!"
     }
     else
     {
         wrapper = "This place is different."
     }
-    while isBattle
+    while isBattle == true
     {
         if player.totalHealth > 0 && monster.totalHealth > 0 {
             wrapper = "Would you like to attack or attempt to run?"
-        
-        //response = userInput.text
             switch response {
                 case "attack":
                     player.attackMonster(&monster)
@@ -136,7 +134,7 @@ func battleLoop(inout response: String!) -> String
         else{
             isBattle = false
             if monster.totalHealth <= 0 {
-                wrapper = "You defeated the " + monster.getName + "!"
+                wrapper = "You defeated the " + monster.lifeFormName + "!"
                     monster = nil
             }
             else if player.totalHealth <= 0 {
@@ -147,4 +145,17 @@ func battleLoop(inout response: String!) -> String
         }
     }
     return wrapper
+}
+
+func createHuman(inout name: String!){
+    //var charName: String = name
+    var newPlayer: Human! = Human(_name: &name)
+    player = newPlayer
+}
+
+func typeText(str: String){
+    for var i = 0; i < countElements(str); i++
+    {
+        
+    }
 }

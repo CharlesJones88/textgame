@@ -20,7 +20,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(userInput)
         running = true
         sleep(2)
-        displayText.text = "Welcome to the world of stuff! Would you like to move north, south, east, or west?"
+        self.displayText.text = "What is your name?"
+        
     }
 
     func textFieldShouldReturn(userInput: UITextField!) -> Bool {
@@ -30,18 +31,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func returnTapped() {
-        var userMove = userInput.text
-        userMove = userMove.lowercaseString
-        if checkRand() == false{
-            displayText.text = moveDirection(&userMove)
+        var userMove: String!
+        if player?.lifeFormName == nil
+        {
+            userMove = userInput.text
+            userMove = userMove.lowercaseString
+            createHuman(&userMove)
+            var wait = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector(displayWelcome()), userInfo: nil, repeats: false)
         }
-        else if checkRand() == true{
-            displayText.text = battleLoop(&userMove)
+        else
+        {
+            userMove = userInput.text
+            userMove = userMove.lowercaseString
+            displayText.text = checkState(&userMove)
         }
     }
     
-    func nextLine(sender: AnyObject) {
-        userInput.returnKeyType = UIReturnKeyType.Next
+    func displayWelcome() {
+        self.displayText.text = welcome
     }
 }
 
