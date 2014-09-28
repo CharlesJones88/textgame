@@ -14,8 +14,10 @@ class Human : LifeForm
     {
         super.init()
     }
+    
     override init(inout _name: String!)
     {
         super.init(_name: &_name)
     }
+
 }

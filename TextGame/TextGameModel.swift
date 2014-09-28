@@ -11,11 +11,11 @@ import Foundation
 var state : String = ""
 var direction: String = ""
 var response: String = ""
-var running: Bool!
+var running: Bool = false
 var isBattle: Bool!
-var monster: Monster! = nil
+//var monster: Monster! = nil
 var player: Human! = nil
-let welcome: String! = "Hello \(player.lifeFormName), would you like to go North, South, East, or West?"
+let welcome: String! = "Hello \(player.cName), would you like to go North, South, East, or West?"
 
 func checkState(inout checkResponse: String!) -> String {
     while running == true
@@ -104,9 +104,11 @@ func moveDirection(inout checkDir: String!) -> String {
 func battleLoop(inout response: String!) -> String
 {
     var wrapper: String
+    var goblin: String! = "goblin"
+    var monster: Monster! = Monster(_name: &goblin)
     if isBattle == true
     {
-       wrapper = "You encountered a " + monster.lifeFormName + "!"
+        wrapper = "You encountered a " + monster.cName + "!"
     }
     else
     {
@@ -114,7 +116,8 @@ func battleLoop(inout response: String!) -> String
     }
     while isBattle == true
     {
-        if player.totalHealth > 0 && monster.totalHealth > 0 {
+        
+        if player.cHealth > 0 && monster.cHealth > 0 {
             wrapper = "Would you like to attack or attempt to run?"
             switch response {
                 case "attack":
@@ -133,11 +136,11 @@ func battleLoop(inout response: String!) -> String
         }
         else{
             isBattle = false
-            if monster.totalHealth <= 0 {
-                wrapper = "You defeated the " + monster.lifeFormName + "!"
-                    monster = nil
+            if monster.cHealth <= 0 {
+                wrapper = "You defeated the " + monster.cName + "!"
+                monster = nil
             }
-            else if player.totalHealth <= 0 {
+            else if player.cHealth <= 0 {
                 wrapper = "You were defeated!"
                 running = false
                 
@@ -147,10 +150,10 @@ func battleLoop(inout response: String!) -> String
     return wrapper
 }
 
-func createHuman(inout name: String!){
-    //var charName: String = name
+func createHuman(inout name: String!) -> String{
     var newPlayer: Human! = Human(_name: &name)
     player = newPlayer
+    return welcome
 }
 
 func typeText(str: String){

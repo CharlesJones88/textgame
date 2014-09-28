@@ -32,23 +32,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func returnTapped() {
         var userMove: String!
-        if player?.lifeFormName == nil
+        userMove = userInput.text
+        userMove = userMove.lowercaseString
+        if player?.cName == nil
         {
-            userMove = userInput.text
-            userMove = userMove.lowercaseString
-            createHuman(&userMove)
-            var wait = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector(displayWelcome()), userInfo: nil, repeats: false)
+            self.displayText.text = createHuman(&userMove)
+                            //var wait = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector(returnTapped()), userInfo: nil, repeats: false)
         }
-        else
-        {
-            userMove = userInput.text
-            userMove = userMove.lowercaseString
-            displayText.text = checkState(&userMove)
+        else{
+            self.displayText.text = checkState(&userMove)
         }
+        
     }
     
     func displayWelcome() {
-        self.displayText.text = welcome
+        
+        //var wait = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector(returnTapped()), userInfo: nil, repeats: false)
     }
 }
 

@@ -21,26 +21,23 @@ class LifeForm
         self.attack = 5
         self.magic = 5
     }
-    init(inout _name: String!)
-    {
+    init(inout _name: String!){
         self.name = _name
         self.health = 25
         self.attack = 5
         self.magic = 5
     }
     
-    var lifeFormName: String
-        {
+    var cName: String{
         get{
-            return name
+            return self.name
         }
         set{
-            name = newValue
+            self.name = newValue
         }
     }
     
-    var totalHealth: Int
-        {
+    var cHealth: Int{
         get{
             return health
         }
@@ -49,8 +46,7 @@ class LifeForm
         }
     }
     
-    var totalAttack: Int
-        {
+    var cAttack: Int{
         get{
             return attack
         }
@@ -59,8 +55,7 @@ class LifeForm
         }
     }
     
-    var totalMagic: Int
-        {
+    var cMagic: Int{
         get{
             return magic
         }
@@ -69,16 +64,14 @@ class LifeForm
         }
     }
     //Send attackMonster to monster class
-    func attackMonster(inout m: Monster!)
-    {
+    func attackMonster(inout m: Monster!){
         if m != nil
         {
             m.health -= attack
         }
     }
     //Send attackHuman to human class
-    func attackHuman(inout h: Human!)
-    {
+    func attackHuman(inout h: Human!){
         if h != nil
         {
             h.health -= attack
