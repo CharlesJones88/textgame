@@ -14,18 +14,21 @@ class LifeForm
     var health: Int
     var attack: Int
     var magic: Int
+    var encounter: Bool = false
     init()
     {
         self.name = "Creature"
         self.health = 25
         self.attack = 5
         self.magic = 5
+        self.encounter = true
     }
     init(inout _name: String!){
         self.name = _name
         self.health = 25
         self.attack = 5
         self.magic = 5
+        self.encounter = true
     }
     
     var cName: String{

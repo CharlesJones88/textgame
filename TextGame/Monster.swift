@@ -20,4 +20,16 @@ class Monster : LifeForm
         super.init(_name: &_name)
     }
     
+    func firstEncounter() -> Bool{
+        return encounter
+    }
+    
+    func disableFirstEncounter(){
+        encounter = false
+    }
+    
+    func enableFirstEncounter(){
+        encounter = true
+    }
+    
 }

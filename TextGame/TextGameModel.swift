@@ -13,45 +13,26 @@ var direction: String = ""
 var response: String = ""
 var running: Bool = false
 var isBattle: Bool!
-//var monster: Monster! = nil
+var battleStart: Bool = true
 var player: Human! = nil
 let welcome: String! = "Hello \(player.cName), would you like to go North, South, East, or West?"
+var monster: Monster! = nil
 
-func checkState(inout checkResponse: String!) -> String {
-    while running == true
-    {
-        checkRand()
-        switch state
-        {
-            case "battle":
-                return battleLoop(&checkResponse)
-            case "move":
-                return moveDirection(&checkResponse)
-            default:
-                running = false
-                break
-        }
-    }
-    return "exit"
-}
 
 func checkRand() -> Bool{
     var random : Int = (Int)(arc4random_uniform(10))
-    var compareNum = [3, 5, 9]
-    var checkNum: Int
+    var compareNum = [1,3,5,9]
     for var i = 0; i < compareNum.count; i++
     {
-        
-        checkNum = compareNum[i]
-        if random == checkNum{
-            state = "battle"
+        if random == compareNum[i]
+        {
             isBattle = true
+            return isBattle
         }
-        else{
-            state = "move"
+        else
+        {
             isBattle = false
         }
-        
     }
     return isBattle
 }
@@ -61,40 +42,17 @@ func moveDirection(inout checkDir: String!) -> String {
     switch checkDir{
         case "north":
             dir = "You moved \(checkDir)."
-            if isBattle == true
-            {
-                return dir + "A battle has started!"
-            }
-            else{
                 return dir
-            }
         case "south":
             dir = "You moved \(checkDir)."
-            if isBattle == true
-            {
-                return dir + "A battle has started!"
-            }
-            else{
                 return dir
-            }
         case "east":
             dir = "You moved \(checkDir)."
-            if isBattle == true
-            {
-                return dir + "A battle has started!"
-            }
-            else{
+
                 return dir
-            }
         case "west":
             dir = "You moved \(checkDir)."
-            if isBattle == true
-            {
-                return dir + "A battle has started!"
-            }
-            else{
                 return dir
-            }
         default:
             return "You haven't moved yet."
     }
@@ -105,49 +63,46 @@ func battleLoop(inout response: String!) -> String
 {
     var wrapper: String
     var goblin: String! = "goblin"
-    var monster: Monster! = Monster(_name: &goblin)
-    if isBattle == true
-    {
-        wrapper = "You encountered a " + monster.cName + "!"
+    if battleStart {
+        monster = Monster(_name: &goblin)
+        battleStart = false
     }
-    else
-    {
-        wrapper = "This place is different."
-    }
-    while isBattle == true
-    {
-        
-        if player.cHealth > 0 && monster.cHealth > 0 {
-            wrapper = "Would you like to attack or attempt to run?"
-            switch response {
-                case "attack":
-                    player.attackMonster(&monster)
-                    break
-                case "run":
-                    if checkRand() == false
-                    {
-                        isBattle = false
-                    }
-                    break
-                default:
-                    wrapper = "I don't understand!"
-                    break
-            }
+    if player.cHealth > 0 && monster.cHealth > 0 {
+        if monster.firstEncounter(){
+            monster.disableFirstEncounter()
+            return "You encountered a  \(monster.cName)! Would you like to attack or attempt to run?"
         }
-        else{
-            isBattle = false
-            if monster.cHealth <= 0 {
-                wrapper = "You defeated the " + monster.cName + "!"
-                monster = nil
+        switch response {
+        case "attack":
+            player.attackMonster(&monster)
+            return "You did damage to \(monster.cName)"
+        case "run":
+            if checkRand() == false
+            {
+                isBattle = false
+                return "Got away safely!"
             }
-            else if player.cHealth <= 0 {
-                wrapper = "You were defeated!"
-                running = false
-                
+            else
+            {
+                return "\(monster.cName) did damage to you!"
             }
+        default:
+            return "I don't understand!"
         }
     }
-    return wrapper
+    else{
+        isBattle = false
+        battleStart = true
+        monster.enableFirstEncounter()
+        if monster.cHealth <= 0 {
+            monster = nil
+            return "You defeated the \(monster.cName)!"
+        }
+        else if player.cHealth <= 0 {
+            return "You were defeated!"
+        }
+    }
+    return "exit"
 }
 
 func createHuman(inout name: String!) -> String{
