@@ -117,10 +117,3 @@ func createHuman(inout name: String!) -> String{
     player = newPlayer
     return welcome
 }
-
-func typeText(str: String){
-    for var i = 0; i < countElements(str); i++
-    {
-        
-    }
-}
