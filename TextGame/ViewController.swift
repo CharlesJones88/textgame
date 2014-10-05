@@ -12,6 +12,8 @@ class ViewController: UIViewController, UITextFieldDelegate
 {
 
     
+    @IBOutlet weak var healthLvl: UITextField!
+    @IBOutlet weak var healthLbl: UILabel!
     @IBOutlet weak var displayText: UITextView!
     @IBOutlet weak var userInput : UITextField!
     override func viewDidLoad()
@@ -30,21 +32,24 @@ class ViewController: UIViewController, UITextFieldDelegate
     func textFieldShouldReturn(userInput: UITextField!) -> Bool
     {
         var userMove: String!
+        var showHealth: String
         userMove = userInput.text
         userMove = userMove.lowercaseString
-        checkRand()
         if player?.cName == nil
         {
             self.displayText.text = createHuman(&userMove)
         }
         else if !isBattle
         {
-                self.displayText.text = moveDirection(&userMove)
+            checkRand()
+            self.displayText.text = moveDirection(&userMove)
         }
         else
         {
             self.displayText.text = battleLoop(&userMove)
+            
         }
+        self.healthLvl.text = String(player.cHealth)
         userInput.text = ""
         return true
     }

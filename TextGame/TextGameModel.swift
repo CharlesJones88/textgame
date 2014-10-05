@@ -12,12 +12,12 @@ var state : String = ""
 var direction: String = ""
 var response: String = ""
 var running: Bool = false
-var isBattle: Bool!
+var isBattle: Bool! = false
 var battleStart: Bool = true
 var player: Human! = nil
 let welcome: String! = "Hello \(player.cName), would you like to go North, South, East, or West?"
 var monster: Monster! = nil
-
+var potion = 10
 
 func checkRand() -> Bool{
     var random : Int = (Int)(arc4random_uniform(10))
@@ -75,7 +75,8 @@ func battleLoop(inout response: String!) -> String
         switch response {
         case "attack":
             player.attackMonster(&monster)
-            return "You did damage to \(monster.cName)"
+            monster.attackHuman(&player)
+            return "You did damage \(player.cAttack) to \(monster.cName) and \(monster.cName) did \(monster.cAttack) to you!"
         case "run":
             if checkRand() == false
             {
@@ -84,8 +85,13 @@ func battleLoop(inout response: String!) -> String
             }
             else
             {
-                return "\(monster.cName) did damage to you!"
+                monster.attackHuman(&player)
+                return "You tripped and the \(monster.cName) did \(monster.cAttack) damage to you!"
             }
+        case "potion":
+            player.cHealth += potion
+            monster.attackHuman(&player)
+            return "You healed yourself by \(potion) points! The \(monster.cName) did \(monster.cAttack) damage to you!"
         default:
             return "I don't understand!"
         }
@@ -95,8 +101,9 @@ func battleLoop(inout response: String!) -> String
         battleStart = true
         monster.enableFirstEncounter()
         if monster.cHealth <= 0 {
+            var monsterDefeated = "You defeated the \(monster.cName)!"
             monster = nil
-            return "You defeated the \(monster.cName)!"
+            return monsterDefeated
         }
         else if player.cHealth <= 0 {
             return "You were defeated!"
