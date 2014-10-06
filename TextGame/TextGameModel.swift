@@ -19,7 +19,8 @@ let welcome: String! = "Hello \(player.cName), would you like to go North, South
 var monster: Monster! = nil
 var potion = 10
 
-func checkRand() -> Bool{
+func checkRand() -> Bool
+{
     var random : Int = (Int)(arc4random_uniform(10))
     var compareNum = [1,3,5,9]
     for var i = 0; i < compareNum.count; i++
@@ -37,7 +38,8 @@ func checkRand() -> Bool{
     return isBattle
 }
 
-func moveDirection(inout checkDir: String!) -> String {
+func moveDirection(inout checkDir: String!) -> String
+{
     var dir: String
     switch checkDir{
         case "north":
@@ -67,52 +69,81 @@ func battleLoop(inout response: String!) -> String
         monster = Monster(_name: &goblin)
         battleStart = false
     }
-    if player.cHealth > 0 && monster.cHealth > 0 {
+    if player.cHealth > 0 || monster.cHealth > 0
+    {
         if monster.firstEncounter(){
             monster.disableFirstEncounter()
             return "You encountered a  \(monster.cName)! Would you like to attack or attempt to run?"
         }
-        switch response {
-        case "attack":
-            player.attackMonster(&monster)
-            monster.attackHuman(&player)
-            return "You did damage \(player.cAttack) to \(monster.cName) and \(monster.cName) did \(monster.cAttack) to you!"
-        case "run":
-            if checkRand() == false
-            {
-                isBattle = false
-                return "Got away safely!"
-            }
-            else
-            {
+        switch response
+        {
+            case "attack":
+                player.attackMonster(&monster)
                 monster.attackHuman(&player)
-                return "You tripped and the \(monster.cName) did \(monster.cAttack) damage to you!"
-            }
-        case "potion":
-            player.cHealth += potion
-            monster.attackHuman(&player)
-            return "You healed yourself by \(potion) points! The \(monster.cName) did \(monster.cAttack) damage to you!"
-        default:
-            return "I don't understand!"
+                if player.cHealth <= 0
+                {
+                    isBattle = false
+                    battleStart = true
+                    monster.enableFirstEncounter()
+                    return "You died!"
+                }
+                else
+                {
+                    return "You did damage \(player.cAttack) to \(monster.cName) and \(monster.cName) did \(monster.cAttack) to you!"
+                }
+            case "run":
+                if checkRand() == false
+                {
+                    isBattle = false
+                    return "Got away safely!"
+                }
+                else
+                {
+                    monster.attackHuman(&player)
+                    if player.cHealth <= 0
+                    {
+                        isBattle = false
+                        battleStart = true
+                        monster.enableFirstEncounter()
+                        return "You died!"
+                    }
+                    else
+                    {
+                        return "You tripped and the \(monster.cName) did \(monster.cAttack) damage to you!"
+                    }
+                }
+            case "potion":
+                player.cHealth += potion
+                monster.attackHuman(&player)
+                if player.cHealth <= 0
+                {
+                    isBattle = false
+                    battleStart = true
+                    monster.enableFirstEncounter()
+                    return "You died!"
+                }
+                else
+                {
+                    return "You healed yourself by \(potion) points! The \(monster.cName) did \(monster.cAttack) damage to you!"
+                }
+            default:
+                return "I don't understand!"
         }
     }
-    else{
-        isBattle = false
-        battleStart = true
-        monster.enableFirstEncounter()
-        if monster.cHealth <= 0 {
+    else if monster.cHealth <= 0
+    {
+            isBattle = false
+            battleStart = true
+            monster.enableFirstEncounter()
             var monsterDefeated = "You defeated the \(monster.cName)!"
             monster = nil
             return monsterDefeated
-        }
-        else if player.cHealth <= 0 {
-            return "You were defeated!"
-        }
     }
     return "exit"
 }
 
-func createHuman(inout name: String!) -> String{
+func createHuman(inout name: String!) -> String
+{
     var newPlayer: Human! = Human(_name: &name)
     player = newPlayer
     return welcome
