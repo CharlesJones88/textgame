@@ -85,11 +85,11 @@
 		5691F05E19CE067A00FC2E05 /* TextGame */ = {
 			isa = PBXGroup;
 			children = (
-				56D6FE5119D39092007FF708 /* LifeForm.swift */,
 				5691F06119CE067A00FC2E05 /* AppDelegate.swift */,
 				5691F06319CE067A00FC2E05 /* ViewController.swift */,
 				5691F06519CE067A00FC2E05 /* Main.storyboard */,
 				5691F08119CE27AD00FC2E05 /* TextGameModel.swift */,
+				56D6FE5119D39092007FF708 /* LifeForm.swift */,
 				56D6FE5519D390C4007FF708 /* Monster.swift */,
 				56D6FE5319D390AB007FF708 /* Human.swift */,
 				5691F06819CE067A00FC2E05 /* Images.xcassets */,

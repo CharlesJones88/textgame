@@ -17,67 +17,80 @@ class LifeForm
     var encounter: Bool = false
     init()
     {
-        self.name = "Creature"
-        self.health = 25
-        self.attack = 5
-        self.magic = 5
+        self.name = ""
+        self.health = 0
+        self.attack = 0
+        self.magic = 0
         self.encounter = true
     }
-    init(inout _name: String!){
-        self.name = _name
+    
+    init(inout name: String!)
+    {
+        self.name = name
         self.health = 25
         self.attack = 5
         self.magic = 5
         self.encounter = true
     }
     
-    var cName: String{
-        get{
+    var cName: String
+    {
+        get
+        {
             return self.name
         }
-        set{
+        set
+        {
             self.name = newValue
         }
     }
     
-    var cHealth: Int{
-        get{
-            return health
+    var cHealth: Int
+    {
+        get
+        {
+            return self.health
         }
-        set{
-            health = newValue
-        }
-    }
-    
-    var cAttack: Int{
-        get{
-            return attack
-        }
-        set{
-            attack = newValue
+        set
+        {
+            self.health = newValue
         }
     }
     
-    var cMagic: Int{
-        get{
-            return magic
+    var cAttack: Int
+    {
+        get
+        {
+            return self.attack
         }
-        set{
-            magic = newValue
+        set
+        {
+            self.attack = newValue
+        }
+    }
+    
+    var cMagic: Int
+    {
+        get
+        {
+            return self.magic
+        }
+        set
+        {
+            self.magic = newValue
         }
     }
     //Send attackMonster to monster class
-    func attackMonster(inout m: Monster!){
+    func attackMonster(inout m: Monster!)
+    {
         if m != nil
         {
-            m.health -= attack
+            m.mHealth -= cAttack
         }
     }
     //Send attackHuman to human class
-    func attackHuman(inout h: Human!){
-        if h != nil
-        {
-            h.health -= attack
-        }
+    func attackHuman(inout h: Human!)
+    {
+        
     }
 }

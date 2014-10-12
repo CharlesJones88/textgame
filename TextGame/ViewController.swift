@@ -8,24 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate
+class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
 {
 
     
-    @IBOutlet weak var healthLvl: UITextField!
+    @IBOutlet weak var displayText: UILabel!
+    @IBOutlet weak var healthLvl: UILabel!
     @IBOutlet weak var healthLbl: UILabel!
-    @IBOutlet weak var displayText: UITextView!
     @IBOutlet weak var userInput : UITextField!
     override func viewDidLoad()
     {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        userInput.delegate = self
-        view.addSubview(userInput)
-        running = true
-        sleep(2)
-        self.displayText.text = "What is your name?"
-        
+        self.userInput.delegate = self
+        sleep(1)
+        self.displayText.text = gameStart
     }
 
         
@@ -34,20 +31,25 @@ class ViewController: UIViewController, UITextFieldDelegate
         var userMove: String!
         var showHealth: String
         userMove = userInput.text
-        userMove = userMove.lowercaseString
+        
         if player?.cName == nil
         {
             self.displayText.text = createHuman(&userMove)
         }
         else if !isBattle
         {
+            userMove = userMove.lowercaseString
             checkRand()
             self.displayText.text = moveDirection(&userMove)
         }
         else
         {
+            userMove = userMove.lowercaseString
             self.displayText.text = battleLoop(&userMove)
-            
+        }
+        if self.healthLbl.text == ""
+        {
+            self.healthLbl.text = healthText
         }
         self.healthLvl.text = String(player.cHealth)
         userInput.text = ""
