@@ -15,6 +15,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
     @IBOutlet weak var displayText: UILabel!
     @IBOutlet weak var healthLvl: UILabel!
     @IBOutlet weak var healthLbl: UILabel!
+    @IBOutlet weak var potionLbl: UILabel!
+    @IBOutlet weak var potionAmt: UILabel!
     @IBOutlet weak var userInput : UITextField!
     override func viewDidLoad()
     {
@@ -31,15 +33,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
         var userMove: String!
         var showHealth: String
         userMove = userInput.text
-        
         if player?.cName == nil
         {
             self.displayText.text = createHuman(&userMove)
         }
-        else if !isBattle
+        
+        else if !isBattle || userMove == "potion"
         {
             userMove = userMove.lowercaseString
-            checkRand()
+            if userMove != "potion"
+            {
+                checkRand()
+            }
             self.displayText.text = moveDirection(&userMove)
         }
         else
@@ -50,8 +55,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
         if self.healthLbl.text == ""
         {
             self.healthLbl.text = healthText
+            self.potionLbl.text = potionText
         }
         self.healthLvl.text = String(player.cHealth)
+        self.potionAmt.text = String(potionUse)
         userInput.text = ""
         return true
     }

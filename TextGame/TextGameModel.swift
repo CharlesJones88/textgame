@@ -23,14 +23,16 @@ var gobAttack: Int! = 3
 var player: Human! = nil
 var monster: Monster! = nil
 //Game text
-let gameStart: String! = "Hello! What is your name?"
+let gameStart: String! = "What is your name?"
 let welcome: String! = "Hello \(player.cName), would you like to go north, south, east or west?"
 let healthText: String! = "Health: "
+let potionText: String! = "Potions: "
 //potions
 var potion = 10
 var potionUse = 0
 var hasPotion: Bool!
-var foundPotion: String = " and you found a potion!"
+var potionString = "potion"
+var foundPotion: String = " and you found a \(potionString)!"
 
 func checkRand() -> Bool
 {
@@ -73,10 +75,11 @@ func checkPotion() -> Bool
 
 func moveDirection(inout checkDir: String!) -> String
 {
-    checkPotion()
+    
     switch checkDir
     {
         case "north":
+            checkPotion()
             dir = "You moved \(checkDir)"
             if hasPotion == true
             {
@@ -88,6 +91,7 @@ func moveDirection(inout checkDir: String!) -> String
                 return dir
             }
         case "south":
+            checkPotion()
             dir = "You moved \(checkDir)"
             if hasPotion == true
             {
@@ -99,6 +103,7 @@ func moveDirection(inout checkDir: String!) -> String
                 return dir
             }
         case "east":
+            checkPotion()
             dir = "You moved \(checkDir)"
             if hasPotion == true
             {
@@ -110,6 +115,7 @@ func moveDirection(inout checkDir: String!) -> String
                 return dir
             }
         case "west":
+            checkPotion()
             dir = "You moved \(checkDir)"
             if hasPotion == true
             {
@@ -121,16 +127,7 @@ func moveDirection(inout checkDir: String!) -> String
                 return dir
             }
         case "potion":
-            if potionUse > 0
-            {
-                player.cHealth += potion
-                potionUse--
-                return "You were healed by \(potion) points!"
-            }
-            else
-            {
-                return "You don't have any potions!"
-            }
+                return usePotion()
         default:
             return "You haven't moved yet."
     }
@@ -156,6 +153,7 @@ func battleLoop(inout response: String!) -> String
                 monster.attackHuman(&player)
                 if player.cHealth <= 0
                 {
+                    player.cHealth = 0
                     isBattle = false
                     battleStart = true
                     monster.enableFirstEncounter()
@@ -178,6 +176,8 @@ func battleLoop(inout response: String!) -> String
                 if checkRand() == false
                 {
                     isBattle = false
+                    battleStart = true
+                    monster.enableFirstEncounter()
                     return "Got away safely!"
                 }
                 else
@@ -196,26 +196,24 @@ func battleLoop(inout response: String!) -> String
                     }
                 }
             case "potion":
-                player.cHealth += potion
                 monster.attackHuman(&player)
                 if player.cHealth <= 0
                 {
                     isBattle = false
                     battleStart = true
                     monster.enableFirstEncounter()
+                    player = nil
                     return "\(player.cName) died!"
                 }
                 else
                 {
                     if potionUse > 0
                     {
-                        player.cHealth += potion
-                        potionUse--
-                        return "You healed yourself by \(potion) points! The \(monster.cName) did \(monster.mAttack) damage to you!"
+                         return usePotion() + "The \(monster.cName) did \(monster.mAttack) damage to you!"
                     }
                     else
                     {
-                        return "You don't have any potions!"
+                        return usePotion()
                     }
                 }
             default:
@@ -223,6 +221,20 @@ func battleLoop(inout response: String!) -> String
         }
     }
     return "exit"
+}
+
+func usePotion() -> String
+{
+    if potionUse > 0
+    {
+        player.cHealth += potion
+        potionUse--
+        return "You healed yourself by \(potion) points!"
+    }
+    else
+    {
+        return "You don't have any potions!"
+    }
 }
 
 func createHuman(inout name: String!) -> String
