@@ -23,25 +23,30 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.userInput.delegate = self
+        running = true
         sleep(1)
-        self.displayText.text = gameStart
+        displayGameStart()
     }
 
         
-    func textFieldShouldReturn(userInput: UITextField!) -> Bool
+    func textFieldShouldReturn(userInput: UITextField!)
     {
         var userMove: String!
         var showHealth: String
         userMove = userInput.text
+        if !running
+        {
+            displayGameStart()
+        }
         if player?.cName == nil
         {
             self.displayText.text = createHuman(&userMove)
         }
         
-        else if !isBattle || userMove == "potion"
+        else if !isBattle || userMove == potionString
         {
             userMove = userMove.lowercaseString
-            if userMove != "potion"
+            if userMove != potionString
             {
                 checkRand()
             }
@@ -60,6 +65,11 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
         self.healthLvl.text = String(player.cHealth)
         self.potionAmt.text = String(potionUse)
         userInput.text = ""
-        return true
+    }
+    
+    func displayGameStart()
+    {
+        running = true
+        self.displayText.text = gameStart
     }
 }
