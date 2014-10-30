@@ -12,30 +12,41 @@ var response: String = ""
 var running: Bool = false
 var isBattle: Bool! = false
 var battleStart: Bool = true
-//Direction
-var dir = "You moved "
-//Monster pool
+let dir = "\(player.cName) moved "
+let playerDead = "\(player.cName) died! "
 var goblin: String! = "goblin"
 var gobHealth: Int! = 10
 var gobAttack: Int! = 3
-//Character objects
 var player: Human! = nil
 var monster: Monster! = nil
-//Game text
-let gameStart: String! = "What is your name?"
-let welcome: String! = "Hello \(player.cName), would you like to go north, south, east or west?"
+let gameStart: String! = "What is your name? "
+let welcome: String! = "Hello \(player.cName), would you like to go north, south, east or west? "
 let healthText: String! = "Health: "
 let potionText: String! = "Potions: "
 let runSafe = "Got away safely!"
-let monsterDefeated = "You defeated the \(monster.cName)! "
-let moveDir = "Would you like to go north, south, east, or west?"
-let runAttack = "Would you like to attack or attempt to run?"
-//potions
+let monsterDefeated = "\(player.cName) defeated the \(monster.cName)! "
+let encounter = "\(player.cName) encountered a  \(monster.cName)! "
+let humanAttack = "\(player.cName) attacked the \(monster.cName) and it took \(player.cAttack) damage. "
+let monsterAttack = "The \(monster.cName) attacked and did \(monster.mAttack) damage. "
+let moveDir = "Would you like to go north, south, east, or west? "
+let runAttack = "Would you like to attack or attempt to run? "
+var invalidDir = "\(player.cName) hasn't moved yet. "
+let endGame = "Game Over"
+let north = "north"
+let south = "south"
+let east = "east"
+let west = "west"
+let attack = "attack"
+let run = "run"
 let potion = 10
 var potionUse = 0
 var hasPotion: Bool!
 let potionString = "potion"
-let foundPotion: String = "and you found a \(potionString)!"
+let foundPotion = "and you found a \(potionString)! "
+let potionHeal = "\(player.cName) was healed by \(potion) points! "
+let noPotions = "You don't have any potions! "
+let invalidCommand = "I don't understand! "
+let runIsFalse = "You tripped and fell! "
 
 func checkRand() -> Bool
 {
@@ -80,7 +91,7 @@ func moveDirection(inout checkDir: String!) -> String
 {
     switch checkDir
     {
-        case "north":
+        case north:
             checkPotion()
             if hasPotion == true
             {
@@ -90,7 +101,7 @@ func moveDirection(inout checkDir: String!) -> String
             {
                 return dir + checkDir + ". " + moveDir
             }
-        case "south":
+        case south:
             checkPotion()
             if hasPotion == true
             {
@@ -100,7 +111,7 @@ func moveDirection(inout checkDir: String!) -> String
             {
                 return dir + checkDir + ". " + moveDir
             }
-        case "east":
+        case east:
             checkPotion()
             if hasPotion == true
             {
@@ -110,7 +121,7 @@ func moveDirection(inout checkDir: String!) -> String
             {
                 return dir + checkDir + ". " + moveDir
             }
-        case "west":
+        case west:
             checkPotion()
             if hasPotion == true
             {
@@ -120,10 +131,10 @@ func moveDirection(inout checkDir: String!) -> String
             {
                 return dir + checkDir + ". " + moveDir
             }
-        case "potion":
+        case potionString:
                 return usePotion() + moveDir
         default:
-            return "You haven't moved yet. " + moveDir
+            return invalidDir + moveDir
     }
     
 }
@@ -138,20 +149,21 @@ func battleLoop(inout response: String!) -> String
     {
         if monster.firstEncounter(){
             monster.disableFirstEncounter()
-            return dir + response + ". " + "You've encountered a  \(monster.cName)! " + runAttack
+            return dir + response + ". " + encounter + runAttack
         }
         switch response
         {
-            case "attack":
+            case attack:
                 player.attackMonster(&monster)
                 monster.attackHuman(&player)
                 if player.cHealth <= 0
                 {
                     player.cHealth = 0
+                    running = false
                     isBattle = false
                     battleStart = true
                     monster.enableFirstEncounter()
-                    return "\(player.cName) died!"
+                    return playerDead
                 }
                 else if monster.mHealth <= 0
                 {
@@ -162,9 +174,9 @@ func battleLoop(inout response: String!) -> String
                 }
                 else
                 {
-                    return "\(player.cName) attacked the \(monster.cName) and it took \(player.cAttack) damage. The \(monster.cName) attacked \(player.cName) and did \(monster.mAttack) damage! " + runAttack
+                    return  humanAttack + monsterAttack + runAttack
                 }
-            case "run":
+            case run:
                 if checkRand() == false
                 {
                     isBattle = false
@@ -177,31 +189,34 @@ func battleLoop(inout response: String!) -> String
                     monster.attackHuman(&player)
                     if player.cHealth <= 0
                     {
+                        player.cHealth = 0
                         running = false
                         isBattle = false
                         battleStart = true
                         monster.enableFirstEncounter()
-                        return "\(player.cName) died!"
+                        return playerDead
                     }
                     else
                     {
-                        return "You tripped and the \(monster.cName) attacked you dealing \(monster.mAttack) damage! " + runAttack
+                        return runIsFalse + monsterAttack + runAttack
                     }
                 }
-            case "potion":
+            case potionString:
                 monster.attackHuman(&player)
                 if player.cHealth <= 0
                 {
+                    player.cHealth = 0
+                    running = false
                     isBattle = false
                     battleStart = true
                     monster.enableFirstEncounter()
-                    return "\(player.cName) died!"
+                    return playerDead
                 }
                 else
                 {
                     if potionUse > 0
                     {
-                         return usePotion() + "The \(monster.cName) did \(monster.mAttack) damage to you! " + runAttack
+                         return usePotion() + monsterAttack + runAttack
                     }
                     else
                     {
@@ -209,10 +224,10 @@ func battleLoop(inout response: String!) -> String
                     }
                 }
             default:
-                return "I don't understand! " + runAttack
+                return invalidCommand + runAttack
         }
     }
-    return "exit"
+    return endGame
 }
 
 func usePotion() -> String
@@ -221,11 +236,11 @@ func usePotion() -> String
     {
         player.cHealth += potion
         potionUse--
-        return "You healed yourself by \(potion) points! "
+        return potionHeal
     }
     else
     {
-        return "You don't have any potions! "
+        return noPotions
     }
 }
 

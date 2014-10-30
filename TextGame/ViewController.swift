@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
 {
@@ -65,11 +66,30 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate
         self.healthLvl.text = String(player.cHealth)
         self.potionAmt.text = String(potionUse)
         userInput.text = ""
+        
+        if running == false
+        {
+            SKAction.waitForDuration(3.0)
+            gameOver()
+            SKAction.waitForDuration(3.0)
+            displayGameStart()
+        }
+    }
+    
+    func gameOver()
+    {
+        self.displayText.text = endGame
+        potionUse = 0
+        player = nil
     }
     
     func displayGameStart()
     {
         running = true
+        self.healthLvl.text = ""
+        self.healthLbl.text = ""
+        self.potionAmt.text = ""
+        self.potionLbl.text = ""
         self.displayText.text = gameStart
     }
 }
