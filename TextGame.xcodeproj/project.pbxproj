@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		565D06351A05991D0095D473 /* BackPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565D06341A05991D0095D473 /* BackPack.swift */; };
 		5691F06219CE067A00FC2E05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5691F06119CE067A00FC2E05 /* AppDelegate.swift */; };
 		5691F06419CE067A00FC2E05 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5691F06319CE067A00FC2E05 /* ViewController.swift */; };
 		5691F06719CE067A00FC2E05 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5691F06519CE067A00FC2E05 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		565D06341A05991D0095D473 /* BackPack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackPack.swift; sourceTree = "<group>"; };
 		5691F05C19CE067A00FC2E05 /* TextGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5691F06019CE067A00FC2E05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5691F06119CE067A00FC2E05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				5691F06319CE067A00FC2E05 /* ViewController.swift */,
 				5691F06519CE067A00FC2E05 /* Main.storyboard */,
 				5691F08119CE27AD00FC2E05 /* TextGameModel.swift */,
+				565D06341A05991D0095D473 /* BackPack.swift */,
 				56D6FE5119D39092007FF708 /* LifeForm.swift */,
 				56D6FE5519D390C4007FF708 /* Monster.swift */,
 				56D6FE5319D390AB007FF708 /* Human.swift */,
@@ -228,6 +231,7 @@
 				56D6FE5219D39092007FF708 /* LifeForm.swift in Sources */,
 				56D6FE5419D390AB007FF708 /* Human.swift in Sources */,
 				5691F08219CE27AD00FC2E05 /* TextGameModel.swift in Sources */,
+				565D06351A05991D0095D473 /* BackPack.swift in Sources */,
 				56D6FE5619D390C4007FF708 /* Monster.swift in Sources */,
 				5691F06219CE067A00FC2E05 /* AppDelegate.swift in Sources */,
 			);

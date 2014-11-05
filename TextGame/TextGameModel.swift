@@ -14,11 +14,19 @@ var isBattle: Bool! = false
 var battleStart: Bool = true
 let dir = "\(player.cName) moved "
 let playerDead = "\(player.cName) died! "
+
+//MONSTERS
+var monster: Monster! = nil
+//goblin
 var goblin: String! = "goblin"
 var gobHealth: Int! = 10
 var gobAttack: Int! = 3
+
+//endMONSTERS
+
 var player: Human! = nil
-var monster: Monster! = nil
+var bag: BackPack = BackPack()
+
 let gameStart: String! = "What is your name? "
 let welcome: String! = "Hello \(player.cName), would you like to go north, south, east or west? "
 let healthText: String! = "Health: "
@@ -38,6 +46,7 @@ let east = "east"
 let west = "west"
 let attack = "attack"
 let run = "run"
+let bagFull = "Your bag is full! Discarding item. "
 let potion = 10
 var potionUse = 0
 var hasPotion: Bool!
@@ -76,6 +85,12 @@ func checkPotion() -> Bool
         if random == compNum[i]
         {
             potionUse++
+            bag.addItem()
+            if bag.isFull()
+            {
+                potionUse--
+                bag.removeItem()
+            }
             hasPotion = true
             return hasPotion
         }
@@ -95,7 +110,14 @@ func moveDirection(inout checkDir: String!) -> String
             checkPotion()
             if hasPotion == true
             {
-                return dir + checkDir + " " + foundPotion + moveDir
+                if !bag.isFull()
+                {
+                    return dir + checkDir + " " + foundPotion + moveDir
+                }
+                else
+                {
+                    return dir + checkDir + " " + foundPotion + bagFull + moveDir
+                }
             }
             else
             {
@@ -105,7 +127,14 @@ func moveDirection(inout checkDir: String!) -> String
             checkPotion()
             if hasPotion == true
             {
-                return dir + checkDir + " " + foundPotion + moveDir
+                if !bag.isFull()
+                {
+                    return dir + checkDir + " " + foundPotion + moveDir
+                }
+                else
+                {
+                    return dir + checkDir + " " + foundPotion + bagFull + moveDir
+                }
             }
             else
             {
@@ -115,7 +144,14 @@ func moveDirection(inout checkDir: String!) -> String
             checkPotion()
             if hasPotion == true
             {
-                return dir + checkDir + " " + foundPotion + moveDir
+                if !bag.isFull()
+                {
+                    return dir + checkDir + " " + foundPotion + moveDir
+                }
+                else
+                {
+                    return dir + checkDir + " " + foundPotion + bagFull + moveDir
+                }
             }
             else
             {
@@ -125,7 +161,14 @@ func moveDirection(inout checkDir: String!) -> String
             checkPotion()
             if hasPotion == true
             {
-                return dir + checkDir + " " + foundPotion + moveDir
+                if !bag.isFull()
+                {
+                    return dir + checkDir + " " + foundPotion + moveDir
+                }
+                else
+                {
+                    return dir + checkDir + " " + foundPotion + bagFull + moveDir
+                }
             }
             else
             {
@@ -134,6 +177,7 @@ func moveDirection(inout checkDir: String!) -> String
         case potionString:
                 return usePotion() + moveDir
         default:
+            isBattle = false
             return invalidDir + moveDir
     }
     
@@ -147,9 +191,82 @@ func battleLoop(inout response: String!) -> String
     }
     if player.cHealth > 0 || monster.mHealth > 0
     {
-        if monster.firstEncounter(){
+        if monster.firstEncounter()
+        {
             monster.disableFirstEncounter()
-            return dir + response + ". " + encounter + runAttack
+            switch response
+            {
+            case north:
+                checkPotion()
+                if hasPotion == true
+                {
+                    if !bag.isFull()
+                    {
+                        return dir + response + " " + foundPotion + encounter + runAttack
+                    }
+                    else
+                    {
+                        return dir + response + " " + foundPotion + bagFull + encounter + runAttack
+                    }
+                }
+                else
+                {
+                    return dir + response + ". " + encounter + runAttack
+                }
+            case south:
+                checkPotion()
+                if hasPotion == true
+                {
+                    if !bag.isFull()
+                    {
+                        return dir + response + " " + foundPotion + encounter + runAttack
+                    }
+                    else
+                    {
+                        return dir + response + " " + foundPotion + bagFull + encounter + runAttack
+                    }
+                }
+                else
+                {
+                    return dir + response + ". " + encounter + runAttack
+                }
+            case east:
+                checkPotion()
+                if hasPotion == true
+                {
+                    if !bag.isFull()
+                    {
+                        return dir + response + " " + foundPotion + encounter + runAttack
+                    }
+                    else
+                    {
+                        return dir + response + " " + foundPotion + bagFull + encounter + runAttack
+                    }
+                }
+                else
+                {
+                    return dir + response + ". " + encounter + runAttack
+                }
+            case west:
+                checkPotion()
+                if hasPotion == true
+                {
+                    if !bag.isFull()
+                    {
+                        return dir + response + " " + foundPotion + encounter + runAttack
+                    }
+                    else
+                    {
+                        return dir + response + " " + foundPotion + bagFull + encounter + runAttack
+                    }
+                }
+                else
+                {
+                    return dir + response + ". " + encounter + runAttack
+                }
+            default:
+                return invalidCommand + moveDir
+            }
         }
         switch response
         {
@@ -232,10 +349,11 @@ func battleLoop(inout response: String!) -> String
 
 func usePotion() -> String
 {
-    if potionUse > 0
+    if !bag.empty()
     {
         player.cHealth += potion
         potionUse--
+        bag.removeItem()
         return potionHeal
     }
     else
